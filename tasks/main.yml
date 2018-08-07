@@ -1,0 +1,44 @@
+# Check mandatory variables
+- name: Check set variables
+  become: false
+  fail:
+    msg: "Variable '{{ item }}' is not defined"
+  when: item not in vars
+  with_items:
+    - gitlabartifact_api_token
+    - gitlabartifact_project_id
+    - gitlabartifact_artifact_name
+    - gitlabartifact_remote_destination
+
+- name: Retrieve latest succesful jobs
+  become: false
+  delegate_to: localhost
+  uri:
+    url: "{{gitlabartifact_jobs_endpoint}}?scope=success"
+    return_content: yes
+    headers: "{{gitlabartifact_auth}}"
+  register: jobslist
+- name: Download artifact to local temporary storage
+  become: false
+  delegate_to: localhost
+  vars:
+  - job_id_query: "[0].id"
+  - __job_id: "{{jobslist.json  | json_query(job_id_query)}}"
+  get_url:
+    url: "{{gitlabartifact_jobs_endpoint}}/{{ __job_id }}/artifacts/{{gitlabartifact_artifact_path}}{{gitlabartifact_artifact_name}}"
+    dest: "{{gitlabartifact_tempstorage}}{{gitlabartifact_artifact_name | basename}}"
+    headers: "{{gitlabartifact_auth}}"
+
+- name: Deploy artifact to remote destination
+  copy:
+    dest: "{{gitlabartifact_remote_destination}}"
+    src: "{{gitlabartifact_tempstorage}}{{gitlabartifact_artifact_name | basename}}"
+  notify:
+  - restart services
+
+#- name: Delete artifact at local temporary storage
+#  become: false
+#  delegate_to: localhost
+#  file:
+#    path: "{{gitlabartifact_tempstorage}}{{gitlabartifact_artifact_name | basename}}"
+#    state: "absent"

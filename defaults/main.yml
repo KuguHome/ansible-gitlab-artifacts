@@ -1,0 +1,6 @@
+gitlabartifact_server: "https://gitlab.com"
+gitlabartifact_tempstorage: "/tmp/"
+gitlabartifact_jobs_endpoint: "{{gitlabartifact_server}}/api/v4/projects/{{ gitlabartifact_project_id }}/jobs"
+gitlabartifact_auth:
+    PRIVATE-TOKEN: "{{ gitlabartifact_api_token }}"
+gitlabartifact_artifact_path: ""

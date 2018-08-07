@@ -1,0 +1,6 @@
+- name: restart services
+  with_items: "{{gitlabartifact_restart_services}}"
+  become: true
+  service:
+    name: "{{item}}"
+    state: restarted
