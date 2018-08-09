@@ -4,3 +4,4 @@ gitlabartifact_jobs_endpoint: "{{gitlabartifact_server}}/api/v4/projects/{{ gitl
 gitlabartifact_auth:
     PRIVATE-TOKEN: "{{ gitlabartifact_api_token }}"
 gitlabartifact_artifact_path: ""
+gitlabartifact_git_reference: ""

@@ -1,5 +1,7 @@
 - name: restart services
-  with_items: "{{gitlabartifact_restart_services}}"
+  when: gitlabartifact_restart_services is defined
+  with_items:
+  - "{{gitlabartifact_restart_services}}"
   become: true
   service:
     name: "{{item}}"

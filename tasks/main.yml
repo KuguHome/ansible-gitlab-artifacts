@@ -22,7 +22,9 @@
   become: false
   delegate_to: localhost
   vars:
-  - job_id_query: "[0].id"
+  - job_id_query_ref: "[?ref=='{{gitlabartifact_git_reference}}'].id | [0]"
+  - job_id_query_all: "[0].id"
+  - job_id_query: "{{ (gitlabartifact_git_reference != '') | ternary(job_id_query_ref, job_id_query_all) }}"
   - __job_id: "{{jobslist.json  | json_query(job_id_query)}}"
   get_url:
     url: "{{gitlabartifact_jobs_endpoint}}/{{ __job_id }}/artifacts/{{gitlabartifact_artifact_path}}{{gitlabartifact_artifact_name}}"
