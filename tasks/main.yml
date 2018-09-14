@@ -21,6 +21,7 @@
 - name: Download artifact to local temporary storage
   become: false
   delegate_to: localhost
+  changed_when: false
   vars:
   - job_id_query_ref: "[?ref=='{{gitlabartifact_git_reference}}'].id | [0]"
   - job_id_query_all: "[0].id"
