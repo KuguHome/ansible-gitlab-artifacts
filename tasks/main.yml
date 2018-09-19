@@ -18,15 +18,23 @@
     return_content: yes
     headers: "{{gitlabartifact_auth}}"
   register: jobslist
+- name: determine correct job
+  become: false
+  vars:
+    - job_id_query_ref: "[?ref=='{{gitlabartifact_git_reference}}'].id | [0]"
+    - job_id_query_all: "[0].id"
+    - job_id_query: "{{ (gitlabartifact_git_reference != '') | ternary(job_id_query_ref, job_id_query_all) }}"
+  set_fact:
+    __job_id: "{{jobslist.json  | json_query(job_id_query)}}"
+- name: fail if no job
+  fail:
+    msg: "No successful job for project_id={{gitlabartifact_project_id}} and git_reference={{gitlabartifact_git_reference}} found"
+  when: __job_id==""
+
 - name: Download artifact to local temporary storage
   become: false
   delegate_to: localhost
   changed_when: false
-  vars:
-  - job_id_query_ref: "[?ref=='{{gitlabartifact_git_reference}}'].id | [0]"
-  - job_id_query_all: "[0].id"
-  - job_id_query: "{{ (gitlabartifact_git_reference != '') | ternary(job_id_query_ref, job_id_query_all) }}"
-  - __job_id: "{{jobslist.json  | json_query(job_id_query)}}"
   get_url:
     url: "{{gitlabartifact_jobs_endpoint}}/{{ __job_id }}/artifacts/{{gitlabartifact_artifact_path}}{{gitlabartifact_artifact_name}}"
     dest: "{{gitlabartifact_tempstorage}}{{gitlabartifact_artifact_name | basename}}"
