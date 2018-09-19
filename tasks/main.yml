@@ -44,6 +44,7 @@
   copy:
     dest: "{{gitlabartifact_remote_destination}}"
     src: "{{gitlabartifact_tempstorage}}{{gitlabartifact_artifact_name | basename}}"
+    mode: "{{gitlabartifact_remote_fileperms}}"
   notify:
   - restart services
 
