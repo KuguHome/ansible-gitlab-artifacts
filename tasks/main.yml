@@ -43,6 +43,7 @@
     url: "{{gitlabartifact_jobs_endpoint}}/{{ __job_id }}/artifacts/{{gitlabartifact_artifact_path}}{{gitlabartifact_artifact_name}}"
     dest: "{{gitlabartifact_tempstorage}}/{{gitlabartifact_artifact_name | basename}}"
     headers: "{{gitlabartifact_auth}}"
+    force: yes
 
 - name: Deploy artifact to remote destination
   copy:
