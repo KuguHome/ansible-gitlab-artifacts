@@ -53,9 +53,9 @@
   notify:
   - restart services
 
-- name: Delete artifact at local temporary storage
-  become: false
-  delegate_to: localhost
-  file:
-    path: "{{gitlabartifact_tempstorage}}{{gitlabartifact_artifact_name | basename}}"
-    state: "absent"
+# - name: Delete artifact at local temporary storage
+#   become: false
+#   delegate_to: localhost
+#   file:
+#     path: "{{gitlabartifact_tempstorage}}{{gitlabartifact_artifact_name | basename}}"
+#     state: "absent"
