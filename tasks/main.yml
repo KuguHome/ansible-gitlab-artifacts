@@ -32,6 +32,7 @@
   when: __job_id==""
 - name: Ensure temporary storage exists
   delegate_to: localhost
+  become: false
   file:
      path: "{{gitlabartifact_tempstorage}}"
      state: directory
