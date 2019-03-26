@@ -14,43 +14,43 @@
   become: false
   delegate_to: localhost
   uri:
-    url: "{{gitlabartifact_jobs_endpoint}}?scope=success"
+    url: "{{ gitlabartifact_jobs_endpoint }}?scope=success"
     return_content: yes
-    headers: "{{gitlabartifact_auth}}"
+    headers: "{{ gitlabartifact_auth }}"
   register: jobslist
 - name: determine correct job
   become: false
   vars:
-    - job_id_query_ref: "[?ref=='{{gitlabartifact_git_reference}}'].id | [0]"
+    - job_id_query_ref: "[?ref=='{{ gitlabartifact_git_reference }}'].id | [0]"
     - job_id_query_all: "[0].id"
-    - job_id_query: "{{ (gitlabartifact_git_reference != '') | ternary(job_id_query_ref, job_id_query_all) }}"
+    - job_id_query: "{{ gitlabartifact_git_reference | ternary(job_id_query_ref, job_id_query_all) }}"
   set_fact:
-    __job_id: "{{jobslist.json  | json_query(job_id_query)}}"
+    __job_id: "{{ jobslist.json  | json_query(job_id_query) }}"
 - name: fail if no job
   fail:
-    msg: "No successful job for project_id={{gitlabartifact_project_id}} and git_reference={{gitlabartifact_git_reference}} found"
-  when: __job_id==""
+    msg: "No successful job for project_id={{ gitlabartifact_project_id }} and git_reference={{ gitlabartifact_git_reference }} found"
+  when: __job_id
 - name: Ensure temporary storage exists
   delegate_to: localhost
   become: false
   file:
-     path: "{{gitlabartifact_tempstorage}}"
+     path: "{{ gitlabartifact_tempstorage }}"
      state: directory
 - name: Download artifact to local temporary storage
   become: false
   delegate_to: localhost
   changed_when: false
   get_url:
-    url: "{{gitlabartifact_jobs_endpoint}}/{{ __job_id }}/artifacts/{{gitlabartifact_artifact_path}}{{gitlabartifact_artifact_name}}"
-    dest: "{{gitlabartifact_tempstorage}}/{{gitlabartifact_artifact_name | basename}}"
-    headers: "{{gitlabartifact_auth}}"
+    url: "{{ gitlabartifact_jobs_endpoint }}/{{ __job_id }}/artifacts/{{ itlabartifact_artifact_path }}{{ gitlabartifact_artifact_name }}"
+    dest: "{{ gitlabartifact_tempstorage }}/{{ gitlabartifact_artifact_name | basename }}"
+    headers: "{{ gitlabartifact_auth }}"
     force: yes
 
 - name: Deploy artifact to remote destination
   copy:
-    dest: "{{gitlabartifact_remote_destination}}"
-    src: "{{gitlabartifact_tempstorage}}/{{gitlabartifact_artifact_name | basename}}"
-    mode: "{{gitlabartifact_remote_fileperms}}"
+    dest: "{{ gitlabartifact_remote_destination }}"
+    src: "{{ gitlabartifact_tempstorage }}/{{ gitlabartifact_artifact_name | basename }}"
+    mode: "{{ gitlabartifact_remote_fileperms }}"
   notify:
   - restart services
 

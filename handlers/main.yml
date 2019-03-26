@@ -1,8 +1,8 @@
 - name: restart services
   when: gitlabartifact_restart_services is defined
   with_items:
-  - "{{gitlabartifact_restart_services}}"
+  - "{{ gitlabartifact_restart_services }}"
   become: true
   service:
-    name: "{{item}}"
+    name: "{{ item }}"
     state: restarted
