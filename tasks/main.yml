@@ -29,7 +29,7 @@
 - name: fail if no job
   fail:
     msg: "No successful job for project_id={{ gitlabartifact_project_id }} and git_reference={{ gitlabartifact_git_reference }} found"
-  when: __job_id
+  when: not __job_id
 - name: Ensure temporary storage exists
   delegate_to: localhost
   become: false
@@ -41,7 +41,7 @@
   delegate_to: localhost
   changed_when: false
   get_url:
-    url: "{{ gitlabartifact_jobs_endpoint }}/{{ __job_id }}/artifacts/{{ itlabartifact_artifact_path }}{{ gitlabartifact_artifact_name }}"
+    url: "{{ gitlabartifact_jobs_endpoint }}/{{ __job_id }}/artifacts/{{ gitlabartifact_artifact_path }}{{ gitlabartifact_artifact_name }}"
     dest: "{{ gitlabartifact_tempstorage }}/{{ gitlabartifact_artifact_name | basename }}"
     headers: "{{ gitlabartifact_auth }}"
     force: yes
