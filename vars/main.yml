@@ -1,6 +1,8 @@
+gitlabartifact_server_url: "https://{{ gitlabartifact_server }}"
+gitlabartifact_deploytoken_name: "gitlab+deploy-token-{{ gitlabartifact_deploytoken_number }}"
 gitlabartifact_auth:
     PRIVATE-TOKEN: "{{ gitlabartifact_api_token }}"
-gitlabartifact_projects_endpoint: "{{ gitlabartifact_server }}/api/v4/projects/{{ gitlabartifact_project_id }}/"
+gitlabartifact_projects_endpoint: "{{ gitlabartifact_server_url }}/api/v4/projects/{{ gitlabartifact_project_id }}/"
 gitlabartifact_pipeline_path: "{{ ('pipelines/'+ gitlabartifact_pipeline_id | string +'/') if gitlabartifact_pipeline_id is defined else '' }}"
 gitlabartifact_jobs_endpoint: "{{ gitlabartifact_projects_endpoint }}jobs"
 gitlabartifact_pipelinejobs_endpoint: "{{ gitlabartifact_projects_endpoint }}{{ gitlabartifact_pipeline_path }}jobs"

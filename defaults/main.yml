@@ -1,4 +1,6 @@
-gitlabartifact_server: "https://gitlab.com"
+gitlabartifact_server: "gitlab.com"
+gitlabartifact_clonedepth: 1
+gitlabartifact_overwrite: no
 gitlabartifact_artifact_path: ""
 gitlabartifact_git_reference: ""
 gitlabartifact_jobname: ""
