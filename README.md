@@ -1,8 +1,15 @@
 Ansible role to manage Gitlab artifacts
 ---------------------------------------
 
-This role downloads and deploys the latest gitlab artifact from a specific project
+This role downloads and deploys a Gitlab artifact from a specific project.
 It is based upon https://gitlab.com/chstudio/ansible/gitlab-artifacts by Stéphane Hulard <s.hulard@chstudio.fr>
+
+The download happens completely on the local system running the Ansible playbook, so Gitlab credentials/token are not disclosed to the remote system.
+
+The by default, the latest artifact is selected, but this can be filtered via build pipeline ID, Git reference or job name and either all artifacts or a specific file can be downloaded.
+
+There is a deployment task (including a customizable system service restart handler) to a remote system included for simple cases, but the deployment can also be handled externally e.g. by the surrounding playbook.
+
 
 ## Example
 
@@ -26,13 +33,15 @@ It is based upon https://gitlab.com/chstudio/ansible/gitlab-artifacts by Stépha
 * `gitlabartifact_artifact_path`: The path to the artifact within the artifacts browser.
 * `gitlabartifact_artifact_name`: The filename of the artifact to download. If not defined, the whole artifacts.zip will be downloaded.
 * `gitlabartifact_git_reference`: e.g. the branch name, tag or commit hash of the git revision the artifact was built from
+* `gitlabartifact_jobname`: The CI job name which created the atrifact
+* `gitlabartifact_pipeline_id`: The ID of the pipeline which produced the artifact
 * `gitlabartifact_tempstorage`: The place on the local machine running the ansible playbook to temporarily store the artifact downloaded from Gitlab
-* `gitlabartifact_name`: A freely chosen name used as a dict key for the local tempfile location in `gitlabartifact_localfile`
+* `gitlabartifact_name`: A freely chosen name used as a dictionary key for the local tempfile location in `gitlabartifact_localfile`
 * `gitlabartifact_remote_destination`: The target remote location to deploy the artifact to
 * `gitlabartifact_restart_services`: System services to restart after deployment
 * `gitlabartifact_cleanup_local`: Whether to delete the artifact from the local machine after deploying to remote
 
-Some more internal variables can be found in `defaults/main.yml`.
+Some more internal variables can be found in `defaults/main.yml` and `vars/main.yml`.
 
 ## Output variable
-`gitlabartifact_localfile`: After running the role, the full path/filename of the downloaded artifact can be found in this variable, identified by the key given in `gitlabartifact_name`. This can be used to e.g. deploy the file separately vie Ansible's `file` menu
+`gitlabartifact_localfile`: After running the role, the full path/filename of the downloaded artifact can be found in this variable, identified by the key given in `gitlabartifact_name`. This can be used to e.g. deploy the file separately vie Ansible's `unarchive` module etc.

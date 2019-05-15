@@ -13,18 +13,20 @@
     url: "{{ gitlabartifact_pipelinejobs_endpoint }}?scope=success"
     return_content: yes
     headers: "{{ gitlabartifact_auth }}"
-  register: jobslist
+  register: gitlabartifact_jobslist
 - name: determine correct job
   become: false
   vars:
-  - job_id_query_ref: "[?ref=='{{ gitlabartifact_git_reference }}'].id | [0]"
-  - job_id_query_all: "[0].id"
-  - job_id_query: "{{ gitlabartifact_git_reference | ternary(job_id_query_ref, job_id_query_all) }}"
+  - job_id_query_filter_ref: "ref=='{{ gitlabartifact_git_reference }}'"
+  - job_id_query_filter_name: "name=='{{ gitlabartifact_jobname }}'"
+  - job_id_query_filters: "{{ (gitlabartifact_git_reference or gitlabartifact_jobname) | ternary('?', '*') }}{{ gitlabartifact_git_reference | ternary(job_id_query_filter_ref, '') }}{{ (gitlabartifact_git_reference and gitlabartifact_jobname) | ternary(' && ', '') }}{{ gitlabartifact_jobname | ternary(job_id_query_filter_name, '') }}"
+  - job_id_query: "[{{ job_id_query_filters }}].id | [0]"
   set_fact:
-    __job_id: "{{ jobslist.json  | json_query(job_id_query) }}"
+    __job_id: "{{ gitlabartifact_jobslist.json | json_query(job_id_query) }}"
+
 - name: fail if no job
   fail:
-    msg: "No successful job for project_id={{ gitlabartifact_project_id }} and git_reference={{ gitlabartifact_git_reference }} found"
+    msg: "No successful job for project_id={{ gitlabartifact_project_id }}, jobname={{ gitlabartifact_jobname }} and git_reference={{ gitlabartifact_git_reference }} found"
   when: not __job_id
 - name: Ensure temporary storage exists
   delegate_to: localhost

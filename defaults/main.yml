@@ -1,6 +1,7 @@
 gitlabartifact_server: "https://gitlab.com"
 gitlabartifact_artifact_path: ""
 gitlabartifact_git_reference: ""
+gitlabartifact_jobname: ""
 gitlabartifact_tempstorage: "/tmp/gitlabartifact/"
 gitlabartifact_name: completepath_local
 gitlabartifact_forcedownload: true
