@@ -23,8 +23,8 @@ It is based upon https://gitlab.com/chstudio/ansible/gitlab-artifacts by Stépha
 * `gitlabartifact_server`: The base server URL of your GitLab instance "https://gitlab.com"
 * `gitlabartifact_api_token`: The API token as acquired from `/profile/personal_access_tokens` in Gitlab
 * `gitlabartifact_project_id`: The complete path of the project (including all namespaces/groupnames/projectnames) with all `/` replaced by `%2F`
-* `gitlabartifact_artifact_path`: The path to the artifact within the artifacts browser
-* `gitlabartifact_artifact_name`: The filename of the artifact to download
+* `gitlabartifact_artifact_path`: The path to the artifact within the artifacts browser.
+* `gitlabartifact_artifact_name`: The filename of the artifact to download. If not defined, the whole artifacts.zip will be downloaded.
 * `gitlabartifact_git_reference`: e.g. the branch name, tag or commit hash of the git revision the artifact was built from
 * `gitlabartifact_tempstorage`: The place on the local machine running the ansible playbook to temporarily store the artifact downloaded from Gitlab
 * `gitlabartifact_name`: A freely chosen name used as a dict key for the local tempfile location in `gitlabartifact_localfile`

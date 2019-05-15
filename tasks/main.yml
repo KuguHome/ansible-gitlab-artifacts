@@ -6,7 +6,6 @@
   with_items:
   - gitlabartifact_api_token
   - gitlabartifact_project_id
-  - gitlabartifact_artifact_name
 - name: Retrieve latest succesful jobs
   become: false
   delegate_to: localhost
@@ -38,10 +37,11 @@
   delegate_to: localhost
 #  changed_when: false
   get_url:
-    url: "{{ gitlabartifact_jobs_endpoint }}/{{ __job_id }}/artifacts/{{ gitlabartifact_artifact_path }}{{ gitlabartifact_artifact_name }}"
+    url: "{{ gitlabartifact_jobs_endpoint }}/{{ __job_id }}/artifacts/{{ gitlabartifact_artifact_completepath }}"
     dest: "{{ gitlabartifact_completepath_local }}"
     headers: "{{ gitlabartifact_auth }}"
     force: "{{ gitlabartifact_forcedownload }}"
+  register: gitlabartifact_downloadresult
 
 - name: Store local artifact path to fact
   set_fact:
