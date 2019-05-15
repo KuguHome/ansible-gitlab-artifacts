@@ -1,0 +1,21 @@
+---
+galaxy_info:
+  author: Hanno - Felix Wagner <h.wagner@kugu-home.com>; Stéphane Hulard <s.hulard@chstudio.fr>
+  description: "Ansible role to manage download and deployment of Gitlab CI artifacts."
+  company: KUGU Home GmbH
+  license: Apache
+  min_ansible_version: 2.4
+  platforms:
+  - name: GenericUNIX
+  - name: Debian
+  - name: Ubuntu
+  - name: EL
+
+  galaxy_tags:
+  - gitlab
+  - artifacts
+  - deployment
+
+  issue_tracker_url: https://github.com/KuguHome/ansible-gitlabartifacts/issues
+
+dependencies: []
