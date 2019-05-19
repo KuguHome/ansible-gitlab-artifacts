@@ -8,5 +8,6 @@ gitlabartifact_tempstorage: "/tmp/gitlabartifact/"
 gitlabartifact_name: completepath_local
 gitlabartifact_forcedownload: true
 gitlabartifact_cleanup_local: false
+gitlabartifact_extract: false
 gitlabartifact_remote_fileperms: "0644"
 gitlabartifact_localfile: {}

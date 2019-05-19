@@ -49,11 +49,19 @@
   set_fact:
     gitlabartifact_localfile: "{{ gitlabartifact_localfile | combine( dict( [gitlabartifact_name] | zip([gitlabartifact_completepath_local])) ) }}"
 
+- name: Unpack artifacts archive locally
+  when: gitlabartifact_extract and not gitlabartifact_artifact_file
+  delegate_to: localhost
+  unarchive:
+    src: "{{ gitlabartifact_completepath_local }}"
+    dest: "{{ gitlabartifact_tempstorage }}/"
+    remote_src: yes
+
 - name: Deploy artifact to remote destination
   when: gitlabartifact_remote_destination is defined and gitlabartifact_remote_destination | length | int > 0
   copy:
-    dest: "{{ gitlabartifact_remote_destination }}"
     src: "{{ gitlabartifact_completepath_local }}"
+    dest: "{{ gitlabartifact_remote_destination }}"
     mode: "{{ gitlabartifact_remote_fileperms }}"
   notify:
   - restart services

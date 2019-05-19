@@ -40,6 +40,7 @@ There is a deployment task (including a customizable system service restart hand
 * `gitlabartifact_remote_destination`: The target remote location to deploy the artifact to
 * `gitlabartifact_restart_services`: System services to restart after deployment
 * `gitlabartifact_cleanup_local`: Whether to delete the artifact from the local machine after deploying to remote
+* `gitlabartifact_extract`: If the whole artifacts.zip is downloaded, this flag determines whether the archive is extracted to the local machine.
 
 Some more internal variables can be found in `defaults/main.yml` and `vars/main.yml`.
 
