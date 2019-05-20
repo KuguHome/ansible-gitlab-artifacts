@@ -1,5 +1,4 @@
 - name: Deploy Gitlab repository content directly to remote machine
-  tags: gitdeploy
   git:
     repo: "https://{{ gitlabartifact_deploytoken_name }}:{{ lookup('file', gitlabartifact_deploytoken_storage+gitlabartifact_deploytoken_name) }}@{{ gitlabartifact_server }}/{{ gitlabartifact_project_id }}.git"
     dest: "{{ gitlabartifact_remote_destination }}"
