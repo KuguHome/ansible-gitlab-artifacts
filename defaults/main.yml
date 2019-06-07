@@ -2,7 +2,7 @@ gitlabartifact_server: "gitlab.com"
 gitlabartifact_clonedepth: 1
 gitlabartifact_overwrite: no
 gitlabartifact_artifact_path: ""
-gitlabartifact_git_reference: ""
+gitlabartifact_git_reference: "master"
 gitlabartifact_jobname: ""
 gitlabartifact_tempstorage: "/tmp/gitlabartifact/"
 gitlabartifact_name: completepath_local
