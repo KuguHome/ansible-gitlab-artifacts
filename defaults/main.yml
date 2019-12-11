@@ -11,3 +11,4 @@ gitlabartifact_cleanup_local: false
 gitlabartifact_extract: false
 gitlabartifact_remote_fileperms: "0644"
 gitlabartifact_localfile: {}
+gitlabartifact_deploytoken_content: "{{ lookup('file', gitlabartifact_deploytoken_storage+gitlabartifact_deploytoken_name) }}"
