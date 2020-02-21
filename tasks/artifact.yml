@@ -58,16 +58,17 @@
     remote_src: yes
 
 - name: Check for the remote destination
+  when: gitlabartifact_remote_destination is defined and gitlabartifact_remote_destination | length | int > 0
   stat:
     path: "{{ gitlabartifact_remote_destination }}"
   register: remote_destination
 
 - name: Ensure remote destination storage exists
   become: false
+  when: gitlabartifact_remote_destination is defined and gitlabartifact_remote_destination | length | int > 0 and remote_destination.stat.exists == false
   file:
      path: "{{ gitlabartifact_remote_destination }}"
      state: directory
-  when: remote_destination.stat.exists == false
 
 - name: Deploy artifact to remote destination
   when: gitlabartifact_remote_destination is defined and gitlabartifact_remote_destination | length | int > 0
