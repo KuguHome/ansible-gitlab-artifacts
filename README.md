@@ -26,7 +26,7 @@ There is a deployment task (including a customizable system service restart hand
     - "openhab2"
 ```
 
-## Available Varaiables
+## Available Variables
 * `gitlabartifact_server`: The server name of your Gitlab instance, e.g. "gitlab.com"
 * `gitlabartifact_api_token`: The API token as acquired from `/profile/personal_access_tokens` in Gitlab
 * `gitlabartifact_project_id`: The complete path of the project (including all namespaces/groupnames/projectnames) with all `/` replaced by `%2F`
@@ -58,3 +58,7 @@ Instead of downloading build artifacts to the local machine and pushing them aga
 * `gitlabartifact_restart_services`: System services to restart after deployment
 * `gitlabartifact_clonedepth`: Default 1, override with -1 if you don't want to do a shallow clone
 * `gitlabartifact_overwrite`: Overwrites local changes when checking out
+
+## Important Note
+
+* `gitlabartifact_deploytoken_number` acts as a switch between two deployment options. If the variable **is defined** then **only** the Gitlab repo will be cloned directly on the remote host from Gitlab. If the variable **is not defined** then **only** built artifacts will be downloaded to the local machine and pushed again to a remote host.

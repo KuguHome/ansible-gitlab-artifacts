@@ -9,6 +9,7 @@
 - name: Retrieve latest succesful jobs
   become: false
   delegate_to: localhost
+  check_mode: no
   uri:
     url: "{{ gitlabartifact_pipelinejobs_endpoint }}?scope=success"
     return_content: yes
@@ -56,6 +57,19 @@
     src: "{{ gitlabartifact_completepath_local }}"
     dest: "{{ gitlabartifact_tempstorage }}/"
     remote_src: yes
+
+- name: Check for the remote destination
+  when: gitlabartifact_remote_destination is defined and gitlabartifact_remote_destination | length | int > 0
+  stat:
+    path: "{{ gitlabartifact_remote_destination }}"
+  register: remote_destination
+
+- name: Ensure remote destination storage exists
+  become: false
+  when: gitlabartifact_remote_destination is defined and gitlabartifact_remote_destination | length | int > 0 and remote_destination.stat.exists == false
+  file:
+     path: "{{ gitlabartifact_remote_destination }}"
+     state: directory
 
 - name: Deploy artifact to remote destination
   when: gitlabartifact_remote_destination is defined and gitlabartifact_remote_destination | length | int > 0
